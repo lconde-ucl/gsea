@@ -18,9 +18,16 @@ if( !params.inputfile ){
 }
 
 inputfile = file(params.inputfile)
-if( !inputfile.exists() ) exit 1, "Inputfile not found: ${params.inputfile}. Specify path with --inputfile."
+if( !inputfile.exists() ) exit 1, "Inputfile not found: ${params.inputfile}. Specify path with --inputfile"
 
 file_ch = Channel.fromPath( params.inputfile, checkIfExists: true )
+
+
+gmx = file(params.gmx)	
+if( !gmx.exists() ) exit 1, "GMX file not found: ${params.gmx}. Specify path with --gmx"
+
+gmx_ch = Channel.fromPath( params.gmx, checkIfExists: true )
+
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -89,6 +96,7 @@ println "========================================================"
 println "['Pipeline Name']     = nf/gsea"
 println "['Pipeline Version']  = $workflow.manifest.version"
 println "['Inputfile']         = $params.inputfile"
+println "['GMX set']           = $params.gmx"
 println "['Outdir']            = $params.outdir"
 println "['Working dir']       = $workflow.workDir"
 println "['Current user']      = $USER"
@@ -103,7 +111,7 @@ println "========================================================"
 */
 
 workflow{ 
-    GSEA(file_ch) 
+    GSEA(file_ch, gmx_ch) 
 } 
 
 

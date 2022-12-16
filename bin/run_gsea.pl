@@ -10,8 +10,7 @@ use Getopt::Long qw(GetOptionsFromArray :config pass_through no_auto_abbrev bund
 use File::Basename;
 
 
-#my $gsea="/shared/ucl/depts/cancer/apps/nf/gsea/main/bin/gsea-3.0.jar";
-my $gsea="gsea-3.0.jar";
+my $gsea="/shared/ucl/depts/cancer/apps/nf/gsea/main/bin/gsea-3.0.jar";
 
 my $rand_id=`od -N 4 -t uL -An /dev/urandom | tr -d " " | tr -d "\n"`;
 

@@ -22,13 +22,14 @@ process GSEA {
 
     input:
     file inputfile
+    file gmx
 
     output:
     file "gsea.*"
 
     script:
     """
-    run_gsea.pl --rnk ${inputfile} --gmx $params.gmx --perm $params.perm --min_set $params.min_set --max_set $params.max_set
+    run_gsea.pl --rnk ${inputfile} --gmx ${gmx} --perm $params.perm --min_set $params.min_set --max_set $params.max_set
     mv gsea_results*/* .
     plot_gsea.R gsea_table.txt $params.perm
     """
