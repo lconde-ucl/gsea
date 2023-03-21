@@ -3,7 +3,7 @@
 
 library(ggplot2) 
 library(dplyr)
-
+library(stringr)
 
 args = commandArgs(trailingOnly=TRUE)
 
@@ -12,6 +12,9 @@ perm <- as.numeric(args[2])
 
 
 data<-read.table(file, sep="\t", header=T)
+
+#- cut long term names to max 150 characters
+data$GENESET <- str_sub(data$GENESET, start=1, end=100)
 
 #- Get range of NES for ylim
 rangeNES=round(max(abs(max(data$NES)), abs(min(data$NES)))+0.5)
