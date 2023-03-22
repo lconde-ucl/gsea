@@ -13,8 +13,8 @@ perm <- as.numeric(args[2])
 
 data<-read.table(file, sep="\t", header=T)
 
-#- cut long term names to max 150 characters
-data$GENESET <- str_sub(data$GENESET, start=1, end=100)
+#- cut long term names to max 120 characters
+data$GENESET <- str_sub(data$GENESET, start=1, end=120)
 
 #- Get range of NES for ylim
 rangeNES=round(max(abs(max(data$NES)), abs(min(data$NES)))+0.5)
@@ -25,8 +25,10 @@ data$FDR_p[data$FDR_p == 0] <- (1/perm)
 ##- no need to readjust pvalues as there is only one ranked list of genes
 #data<-data %>%  mutate(FDR=p.adjust(FDR_p, method="BH"))
 
-#- Add numeric variable for GENESET to be able to draw horizontal lines
-data <- transform(data, GENESET0 = as.numeric(GENESET))
+#- THIS WORKED BEFORE BUT NOT NOW, IT MIGHT BE A R VERSION THING??
+##- Add numeric variable for GENESET to be able to draw horizontal lines
+#data <- transform(data, GENESET0 = as.numeric(GENESET))
+data <- mutate(data, GENESET0 = GENESET)
 
 #- get plot (based on code from https://www.biostars.org/p/168044/)
 
