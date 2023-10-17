@@ -26,6 +26,7 @@ process GSEA {
 
     output:
     file "gsea.*"
+    file "gsea_table.txt*"
 
     script:
     """
