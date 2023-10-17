@@ -64,7 +64,7 @@ if($max_set ne ''){
 	$max_set=500;
 }
 if($plot ne ''){
-	if($plot ne 'dot' || $plot ne 'bar'){
+	if($plot ne 'dot' && $plot ne 'bar'){
 		usage_gsea("<$plot> is not a valid argument for --plot. Only 'dot' or 'bar' are valid options");
 		return;
 	}	
