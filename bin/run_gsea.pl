@@ -158,7 +158,7 @@ foreach my $file(@files2){
 		close(INF2);
 		my $ratio=sprintf("%.2f", $count/$a[3]);
 		my $ratiooriginal=sprintf("%.2f", $count/$originalsize{$a[0]});
-		print OUTF $rnk."\t".$a[0]."\t".$originalsize{$a[0]}."\t".$a[3]."\t".$count."\t".$ratio."\t".$ratiooriginal."\t".$a[7]."\t".$a[5]."\n";
+		print OUTF $basename_rnk."\t".$a[0]."\t".$originalsize{$a[0]}."\t".$a[3]."\t".$count."\t".$ratio."\t".$ratiooriginal."\t".$a[7]."\t".$a[5]."\n";
 	}
 	close(INF);
 }
