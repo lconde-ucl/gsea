@@ -20,6 +20,7 @@ my $rnk='';
 my $gmx='';	
 my $min_set="";
 my $max_set="";
+my $plot="";
 my $perm="";
 my $output="";
 GetOptionsFromArray (
@@ -29,6 +30,7 @@ GetOptionsFromArray (
     "out=s"   => \$output,
     "min_set=i"   => \$min_set,
     "max_set=i"   => \$max_set,
+    "plot=s"   => \$plot,
     "perm=i"   => \$perm,
     "<>"   => \&print_usage
 ) or die "\n";
@@ -60,6 +62,14 @@ if($max_set ne ''){
 	}	
 }else{
 	$max_set=500;
+}
+if($plot ne ''){
+	if($plot ne 'dot' || $plot ne 'bar'){
+		usage_gsea("<$plot> is not a valid argument for --plot. Only 'dot' or 'bar' are valid options");
+		return;
+	}	
+}else{
+	$plot="dot";
 }
 if($perm ne ''){
 	if(!&isnum($perm) || ($perm < 0)){
@@ -155,7 +165,7 @@ foreach my $file(@files2){
 closedir(D);
 closedir(DIR);
 
-#`PERM=$perm FILE=gsea_table_${basename_rnk}_${basename_gmx}.txt R CMD BATCH plot.R`;
+#`PERM=$perm PLOT=$plot FILE=gsea_table_${basename_rnk}_${basename_gmx}.txt R CMD BATCH plot.R`;
 
 
 sub isnum ($) {
@@ -169,7 +179,7 @@ sub print_usage {
 	my @a=@_;
 
 	my $usage0="\t";
-	my $usage1="\tProgram: Run_GSEA3.0";
+	my $usage1="\tProgram: nf/gsea";
 	my $usage2 = "\tDescription: Runs gene set enrichment analysis (GSEA3.0) given a ranked list of genes (-rnk) and a gene set (-gmx).";
 	my $usage3 = "\tContact: Lucia Conde <l.conde\@ucl.ac.uk>";
 	my $usage4="\t";
@@ -180,14 +190,15 @@ sub print_usage {
 	my $usage9="\t";
 	my $usage10="\tOptions: --min_set NUM   Ignore gene sets that contain less than NUM genes [15]";
 	my $usage11="\t         --max_set NUM	Ignore gene sets that contain more than NUM genes [500]";
-	my $usage12="\t         --perm NUM	Number of permutations [1000]";
-	my $usage13="\t         --out TEXT	Outputdir prefix [gsea_results]";
-        my $usage14="\t";
+	my $usage12="\t         --plot dot|bar	Plot gsea results as a dot plot or a bar plot [dot]";
+	my $usage13="\t         --perm NUM	Number of permutations [1000]";
+	my $usage14="\t         --out TEXT	Outputdir prefix [gsea_results]";
+        my $usage15="\t";
 
 	print "$usage0\n$usage1\n$usage2\n$usage3";
 	print "$usage4\n$usage5\n$usage6\n$usage7\n";
 	print "$usage8\n$usage9\n$usage10\n";
-	print "$usage11\n$usage12\n$usage13\t$usage14\n";
+	print "$usage11\n$usage12\n$usage13\t$usage14\t$usage15\n";
 
 	die "ERROR: Invalid argument '@a'. Please check above the usage of this script\n";
 
@@ -196,7 +207,7 @@ sub print_usage {
 sub usage_gsea {
 	my $error=shift;
 	die qq(
-	Program: Run_GSEA3.0
+	Program: nf/gsea
 	Description: Runs gene set enrichment analysis (GSEA3.0) given a ranked list of genes (-rnk) and a gene set (-gmx)
 	Contact: Lucia Conde <l.conde\@ucl.ac.uk>
 
@@ -205,8 +216,9 @@ sub usage_gsea {
 	Required: --rnk FILE	Ranked list of genes. Needs a column with gene names and a column with the stat
 	          --gmx FILE	Gene sets in GMT format (transposed GMX) (https://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Data_formats#GMT:_Gene_Matrix_Transposed_file_format_.28.2A.gmt.29)
 	Options: --min_set NUM	Ignore gene sets that contain less than NUM genes [15]
-		 --perm NUM	Number of permutations [1000]
 	         --max_set NUM	Ignore gene sets that contain more than NUM genes [500]
+		 --plot dot|bar	Plot gsea results as a dot plot or a bar plot [dot]
+		 --perm NUM	Number of permutations [1000]
   		 --out TEXT	Outputdir prefix [gsea_results]
 
 	ERROR: $error

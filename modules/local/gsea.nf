@@ -30,8 +30,8 @@ process GSEA {
 
     script:
     """
-    run_gsea.pl --rnk ${inputfile} --gmx ${gmx} --perm $params.perm --min_set $params.min_set --max_set $params.max_set
+    run_gsea.pl --rnk ${inputfile} --gmx ${gmx} --perm $params.perm --min_set $params.min_set --max_set $params.max_set --plot $params.plot
     mv gsea_results*/* .
-    plot_gsea.R gsea_table.txt $params.perm
+    plot_gsea.R gsea_table.txt $params.perm $params.plot
     """
 }

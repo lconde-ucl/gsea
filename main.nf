@@ -56,6 +56,7 @@ def helpMessage() {
            --gmx FILENAME               File with gene sets in GMX format. If not specified, it will use the hallmark gene sets from MSigDB (HUGO names)
            --min_set NUM                Ignore gene sets that contain less than NUM genes [15]"
            --max_set NUM	        Ignore gene sets that contain more than NUM genes [500]"
+           --plot dot|bar	        Plot gsea results as a dot plot or a bar plot [dot]"
            --perm NUM                   Number of permutations [1000]"
            --help                       This usage statement
 
@@ -98,6 +99,7 @@ println "['Pipeline Version']  = $workflow.manifest.version"
 println "['Inputfile']         = $params.inputfile"
 println "['GMX set']           = $params.gmx"
 println "['Outdir']            = $params.outdir"
+println "['Plot']              = $params.plot"
 println "['Working dir']       = $workflow.workDir"
 println "['Current user']      = $USER"
 println "========================================================"

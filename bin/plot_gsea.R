@@ -9,6 +9,7 @@ args = commandArgs(trailingOnly=TRUE)
 
 file <- args[1]
 perm <- as.numeric(args[2])
+plot <- args[3]
 
 
 data<-read.table(file, sep="\t", header=T)
@@ -30,24 +31,37 @@ data$FDR_p[data$FDR_p == 0] <- (1/perm)
 #data <- transform(data, GENESET0 = as.numeric(GENESET))
 data <- mutate(data, GENESET0 = GENESET)
 
-#- get plot (based on code from https://www.biostars.org/p/168044/)
+if (plot == "dot"){
+	#- get plot (based on code from https://www.biostars.org/p/168044/)
+	
+	png("gsea.results.png", width=800)
+	p <- ggplot(data, aes(NES, GENESET)) + 
+	    geom_point(aes(colour=FDR_p, size=RATIO)) +
+	    geom_segment(mapping = aes(yend=GENESET0, xend = 0), size=0.5, colour="gray50") +
+	    geom_point(aes(colour=FDR_p, size=RATIO)) +
+	    scale_color_gradient(limits=c(0, 0.05), low="red", high="white") +
+	    geom_vline(xintercept=0, size=0.5, colour="gray50") +
+	    theme(strip.text.x = element_text(size = 8), 
+		  panel.background=element_rect(fill="gray95", colour="gray95"),
+	          panel.grid.major=element_line(size=0.25,linetype='solid', colour="gray90"), 
+	          panel.grid.minor=element_line(size=0.25,linetype='solid', colour="gray90"),
+	          axis.title.y=element_blank()) +
+	    expand_limits(x=c(-rangeNES,rangeNES)) +
+	    scale_x_continuous(breaks=seq(-rangeNES, rangeNES, 2)) +
+	    facet_grid(.~RANK)
+	print(p)
+	dev.off()
+}else{
+	png("gsea.results.png", width=800)
+        p <- ggplot(data, aes(x=NES, y=fct_reorder(GENESET, -NES))) + 
+                geom_col(aes(fill=FDR_p)) +
+                scale_fill_gradient(limits=c(0, 0.05), low="red", high="white") +
+                geom_vline(xintercept=0, size=0.5, colour="gray50") +
+                expand_limits(x=c(-rangeNES,rangeNES)) +
+                ylab("") +
+                facet_grid(.~RANK)
+        print(p)
+        dev.off()
 
-png("gsea.results.png", width=800)
-p <- ggplot(data, aes(NES, GENESET)) + 
-    geom_point(aes(colour=FDR_p, size=RATIO)) +
-    geom_segment(mapping = aes(yend=GENESET0, xend = 0), size=0.5, colour="gray50") +
-    geom_point(aes(colour=FDR_p, size=RATIO)) +
-    scale_color_gradient(limits=c(0, 0.05), low="red", high="white") +
-    geom_vline(xintercept=0, size=0.5, colour="gray50") +
-    theme(strip.text.x = element_text(size = 8), 
-	  panel.background=element_rect(fill="gray95", colour="gray95"),
-          panel.grid.major=element_line(size=0.25,linetype='solid', colour="gray90"), 
-          panel.grid.minor=element_line(size=0.25,linetype='solid', colour="gray90"),
-          axis.title.y=element_blank()) +
-    expand_limits(x=c(-rangeNES,rangeNES)) +
-    scale_x_continuous(breaks=seq(-rangeNES, rangeNES, 2)) +
-    facet_grid(.~RANK)
-print(p)
-dev.off()
-
+}
 
