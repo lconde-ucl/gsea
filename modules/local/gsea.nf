@@ -18,7 +18,7 @@
 
 process GSEA {
     publishDir params.outdir, mode: 'copy'  
-    debug true
+//    debug true
 
     input:
     file inputfile
