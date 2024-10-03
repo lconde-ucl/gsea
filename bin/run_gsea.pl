@@ -11,12 +11,13 @@ use File::Basename;
 
 
 #my $gsea="/shared/ucl/depts/cancer/apps/nf/gsea/main/bin/gsea-3.0.jar";
-my $gsea="gsea-3.0.jar";
+#my $gsea="gsea-3.0.jar";
 
 my $rand_id=`od -N 4 -t uL -An /dev/urandom | tr -d " " | tr -d "\n"`;
 
 my @args=@ARGV;
 
+my $gsea='';
 my $rnk='';
 my $gmx='';	
 my $min_set="";
@@ -26,6 +27,7 @@ my $perm="";
 my $output="";
 GetOptionsFromArray (
     \@args,
+    "gsea=s" => \$gsea,
     "rnk=s" => \$rnk,
     "gmx=s"   => \$gmx,
     "out=s"   => \$output,
@@ -39,6 +41,10 @@ GetOptionsFromArray (
 if ($output eq '') {
 	$output="gsea_results";
 }		
+if (!-e "$gsea") {
+	usage_gsea("Can't find GSEA executable <$gsea>");
+	return;
+}	
 if (!-e "$rnk") {
 	usage_gsea("Can't find rnk file <$rnk>");
 	return;
