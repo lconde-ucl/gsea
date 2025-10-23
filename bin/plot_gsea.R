@@ -53,7 +53,7 @@ if (plot == "dot"){
 	print(p)
 	dev.off()
 }else{
-	png("gsea.results.png", width=2000, height=2400, res=300)
+	png("gsea.results.png", width=2000, height=2000, res=300)
         p <- ggplot(data, aes(x=NES, y=fct_reorder(GENESET, -NES))) + 
                 geom_col(aes(fill=FDR_p)) +
                 scale_fill_gradient(limits=c(0, 0.05), low="red", high="white") +
