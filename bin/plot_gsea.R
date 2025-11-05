@@ -35,7 +35,7 @@ data <- mutate(data, GENESET0 = GENESET)
 if (plot == "dot"){
 	#- get plot (based on code from https://www.biostars.org/p/168044/)
 	
-	png("gsea.results.png", width=2000, height=2000, res=300)
+	png("gsea.results.png", width=3000, height=2000, res=300)
 	p <- ggplot(data, aes(NES, GENESET)) + 
 	    geom_point(aes(colour=FDR_p, size=RATIO)) +
 	    geom_segment(mapping = aes(yend=GENESET0, xend = 0), size=0.5, colour="gray50") +
@@ -53,7 +53,7 @@ if (plot == "dot"){
 	print(p)
 	dev.off()
 }else{
-	png("gsea.results.png", width=2000, height=2000, res=300)
+	png("gsea.results.png", width=3000, height=2000, res=300)
         p <- ggplot(data, aes(x=NES, y=fct_reorder(GENESET, -NES))) + 
                 geom_col(aes(fill=FDR_p)) +
                 scale_fill_gradient(limits=c(0, 0.05), low="red", high="white") +
